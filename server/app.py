@@ -1,21 +1,26 @@
-from fastapi import FastAPI
-import httpx
-from auth.settings import ClientSettings
+from fastapi import FastAPI, APIRouter
+from fastapi.responses import JSONResponse
 
-
+from server.settings import OauthClientSettings
+from server.handler import AuthHandler, StartHandler
+from server.router import AuthRouter, StartRouter
 
 app = FastAPI()
 
-@app.get()
-def auth(session_state: str, state: str, code: str):
-    settings = ClientSettings()
-    resp = httpx.post(
-        token_endpoint,
-        data={
-            "client_id": settings.client_id,
-            "client_secret": settings.client_secret,
-            "grant_type": "authorization_code",
-            "code": code,
-            "redirect_uri": settings.OIDC_REDIRECT_URIS[0],
-        },
+settings = OauthClientSettings()
+
+app.include_router(
+    AuthRouter(
+        AuthHandler(settings=settings)
     )
+)
+
+app.include_router(
+    StartRouter(
+        StartHandler(settings=settings)
+    )
+)
+
+
+
+

@@ -1,7 +1,7 @@
 from oic.oic import Client
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
-from auth.settings import ClientSettings
+from client.settings import ClientSettings
 
 class ImageClient:
     def __init__(self,settings: ClientSettings):

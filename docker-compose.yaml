@@ -1,6 +1,12 @@
 version: '3.6'
 
 services:
+  server:
+    build: . 
+    ports: 
+      - 5000:5000
+    env_file: .env
+
   keycloak_web:
     image: quay.io/keycloak/keycloak:23.0.7
     container_name: keycloak_web

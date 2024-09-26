@@ -1,4 +1,5 @@
 import httpx
+import requests
 from random import choice
 import string
 
@@ -17,19 +18,24 @@ def finger(settings: ClientSettings):
 
 def authorization(authorization_endpoint: str, settings: ClientSettings):
     state = rndstr(size=16)
-    authorization_url = "{authorization_endpoint}?client_id={client_id}&response_type=code&scope=openid&state={state}".format(
+    authorization_url = "{authorization_endpoint}?client_id={client_id}&response_type=code&redirect_uri={redirect_uri}&scope=openid&state={state}".format(
         client_id=settings.client_id,
         authorization_endpoint=authorization_endpoint,
         state=state,
+        redirect_uri=f'http://localhost:{settings.server_port}/{settings.callback_path}'
     )
+    print(authorization_url)
+    return  requests.get(authorization_url)
 
 
 
 def plain_experiment():
-    finger_settings = finger()
+    settings = ClientSettings()
+    finger_settings = finger(settings=settings)
     print(finger_settings)
-    token_endpoint = finger_settings['token_endpoint']
     authorization_endpoint = finger_settings['authorization_endpoint']
+    result = authorization(authorization_endpoint,settings=settings)
+    print(result.status_code)
 
 
 

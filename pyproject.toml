@@ -11,6 +11,8 @@ httpx = "^0.27.2"
 pydantic-settings = "^2.5.0"
 oic = "^1.7.0"
 fastapi = "^0.114.0"
+uvicorn = "^0.30.6"
+yarl = "^1.12.1"
 
 
 [build-system]
